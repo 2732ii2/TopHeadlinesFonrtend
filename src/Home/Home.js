@@ -65,19 +65,9 @@ const Home=()=>{
         const formattedDate = `${day}-${month}-${year}`;
         return (formattedDate);
     }
-    useEffect(()=>{
-       (async()=>{
-        const data=await getNews(); 
-       if(data?.err){
-        console.log("some error occuured");
-       }
-       else{
-        console.log(data?.data?.data?.articles);
-        setArr(data?.data?.data?.articles);
-       }
-       })();
-    },[])
+   
     const [sources,setsources]=useState([]);
+    
     console.log(sources.length?sources?.slice(0,20):[])
     useEffect(()=>{
         (async()=>{
@@ -105,7 +95,11 @@ const Home=()=>{
         setfiltarr(filt);
        }
     },[value])
-    var arr1=["India","Australia","Pakistan","China","BanglaDesh"];
+    
+     
+       
+    
+    var arr1=["India","Australia","Pakistan","USA","Canada"];
 
     const [country,setcountry]=useState(arr1[0]);
     console.log(country);
@@ -116,6 +110,18 @@ const Home=()=>{
     function onChange(e){
         setvalue(e?.target.value);
     }
+    useEffect(()=>{
+        (async()=>{
+         const data=await getNews(country); 
+        if(data?.err){
+         console.log("some error occuured");
+        }
+        else{
+         console.log(data?.data?.data?.articles);
+         setArr(data?.data?.data?.articles);
+        }
+        })();
+     },[country])
     return <div className="bg-black w-[100%] h-[100vh] flex flex-col" >
     <Header arr={arr1} value={value} clickHandler={clickHandler} setvalue={setvalue} onChange={onChange} />
    <div className="flex w-[100%] flex-col  min-h-[auto] bg-[rgba(255,255,255,.1)] scroller  overflow-y-scroll !py-[20px]  justify-between  ">
@@ -163,6 +169,7 @@ const Home=()=>{
                 
                })
             :
+            !arr?.length?<div className="text-white h-[55vh] flex items-center justify-center "> Sorry ! No headlines as of now... </div>:
            arr.map((e,i)=>{
        
             return  <div className="w-[100%] py-2 flex flex-col justify-between min-h-[20vh] bg-[rgba(255,255,255,.1)]" key={i}>

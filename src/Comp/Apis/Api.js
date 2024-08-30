@@ -1,5 +1,6 @@
 import axios from "axios";
-const Url='http://localhost:4800/';
+var Url='http://localhost:4800/';
+Url='https://topheadliinesbackend.onrender.com/';
 const getNews=async()=>{
     try{
         const resp=await axios.get(`${Url}news`);

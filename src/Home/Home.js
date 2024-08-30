@@ -3,7 +3,7 @@ import Header from "../Comp/Header"
 import Img1 from "../Images/Main 2.webp";
 import Img2 from "../Images/MAIN News.webp";
 import Img3 from "../Images/Main3.webp";
-
+import {HashLoader} from "react-spinners";
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { getNews, getSources } from "../Comp/Apis/Api";
 
@@ -110,6 +110,7 @@ const Home=()=>{
     function onChange(e){
         setvalue(e?.target.value);
     }
+    const [loading,setloading]=useState(true);
     useEffect(()=>{
         (async()=>{
          const data=await getNews(country); 
@@ -120,6 +121,7 @@ const Home=()=>{
          console.log(data?.data?.data?.articles);
          setArr(data?.data?.data?.articles);
         }
+        setloading(false);
         })();
      },[country])
     return <div className="bg-black w-[100%] h-[100vh] flex flex-col" >
@@ -152,7 +154,8 @@ const Home=()=>{
     <div className="flex flex-col  overflow-y-srcoll w-[100%] pt-[20px] px-[8%] gap-[40px] ">
        {value?<div className="flex items-start text-white text-[20px]">Search Results : </div>: <h2 className="text-white text-[32px] font-medium tracking-wider">   Top Headlines </h2>}
         {
-            value?
+          loading? <div className="text-white h-[55vh] flex items-center justify-center ">
+            <HashLoader color="white" /> </div>:  value?
             !filtarr.length?<div className="text-white h-[55vh] flex items-center justify-center "> Sorry !  No results</div> :
             filtarr?.map((e,i)=>{
        
